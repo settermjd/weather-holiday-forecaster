@@ -1,1 +1,5 @@
+public/
+!public/index.php
+
+.idea
 node_modules
