@@ -3,3 +3,10 @@ public/
 
 .idea
 node_modules
+
+/.phpcs-cache
+/.phpunit.result.cache
+/clover.xml
+/coveralls-upload.json
+/phpunit.xml
+/vendor/
