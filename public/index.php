@@ -11,47 +11,56 @@
     <span>Want to know if your holiday destination's going to be rained out, snowed in, or subject to a sandstorm?</span>
     <span class="block mt-4 sm:inline sm:mt-0">Register your details below and get daily weather updates for the 5 days prior to your trip up until the day that
         you head home.</span>
-</
->
 </div>
 <form>
     <div class="border-2 rounded-md border-gray-200 bg-white p-4 sm:p-6 md:p-8 mb-6">
-        <div class="">
+        <div class=" grid gap-4 grid-cols-2">
             <div class="mb-4">
-                <input class="border-2 rounded-md border-gray-200 w-full p-4 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                <input class="input-field"
                        type="text"
                        id="name"
                        name="name"
                        tabindex="1"
+                       required
                        placeholder="Your full name">
             </div>
             <div class="mb-4">
-                <input class="border-2 rounded-md border-gray-200 w-full p-4 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                <input class="input-field"
                        type="text"
                        name="city"
                        tabindex="2"
+                       required
                        placeholder="Your city">
             </div>
             <div class="mb-4">
-                <input class="border-2 rounded-md border-gray-200 w-full p-4 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                <input class="input-field"
                        type="tel"
                        name="phone_number"
                        tabindex="3"
                        placeholder="Your telephone number">
             </div>
             <div class="mb-4">
-                <input class="border-2 rounded-md border-gray-200 w-full p-4 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                <input class="input-field"
+                       type="email"
+                       name="email"
+                       tabindex="3"
+                       placeholder="Your email address">
+            </div>
+            <div class="mb-4">
+                <input class="input-field"
                        type="date"
                        name="start_date"
                        tabindex="4"
+                       required
                        placeholder="Start date of your holidays"
                 >
             </div>
             <div class="mb-4">
-                <input class="border-2 rounded-md border-gray-200 w-full p-4 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+                <input class="input-field"
                        type="date"
                        name="end_date"
                        tabindex="5"
+                       required
                        placeholder="End date of your holidays"
                 >
             </div>
@@ -68,6 +77,6 @@
         <span class="text-sm text-gray-400">For support, email <a href="mailto:msetter@twilio.com" class="text-blue-500 underline">msetter@twilio.com</a>.</span>
     </div>
     <script src="js/app.js">
-</form>
-</body>
+        </form>
+        </body>
 </html>
