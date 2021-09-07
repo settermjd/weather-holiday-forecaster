@@ -45,6 +45,32 @@ class ApiHandler implements RequestHandlerInterface
             $result['status'] = 'success';
         }
 
+        if ($request->getMethod() === 'PUT') {
+            $data = $request->getParsedBody();
+
+            /** @var Forecast $forecast */
+            $forecast = $this
+                ->entityManager
+                ->getRepository(Forecast::class)
+                ->findOneBy(
+                    [
+                        'id' => $request->getAttribute('id')
+                    ]
+                );
+
+            $forecast->setName($data['name']);
+            $forecast->setCity($data['city']);
+            $forecast->setPhone($data['phone']);
+            $forecast->setEmail($data['email']);
+            $forecast->setStartDate($data['startDate']);
+            $forecast->setEndDate($data['endDate']);
+
+            $this->entityManager->persist($forecast);
+            $this->entityManager->flush();
+
+            $result['status'] = 'success';
+        }
+
         return new JsonResponse($result);
     }
 }
