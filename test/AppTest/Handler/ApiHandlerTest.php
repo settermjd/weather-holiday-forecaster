@@ -42,13 +42,13 @@ class ApiHandlerTest extends TestCase
     public function testListAllEntriesReturnsJsonResponseOfAvailableEntriesIfEntriesAreAvailable()
     {
         $forecast = new Forecast(
-            1,
             'Matthew Setter',
             'Lisbon',
             '+1123456789',
             'dave.grohl@example.org',
             'Tuesday, 07 Sep 2021',
-            'Friday, 10 Sep 2021'
+            'Friday, 10 Sep 2021',
+            1,
         );
 
         /** @var EntityRepository|ObjectProphecy $repository */
