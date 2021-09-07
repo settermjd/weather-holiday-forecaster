@@ -207,4 +207,51 @@ class ApiHandlerTest extends TestCase
         self::assertEquals($response->getBody()->getContents(), '{"status":"success"}');
     }
 
+    public function testCanDeleteExistingForecast()
+    {
+        $forecast = new Forecast(
+            'Matthew Setter',
+            'Lisbon',
+            '+1123456789',
+            'dave.grohl@example.org',
+            'Tuesday, 07 Sep 2021',
+            'Friday, 10 Sep 2021',
+            1
+        );
+
+        /** @var EntityRepository|ObjectProphecy $repository */
+        $repository = $this->prophesize(ObjectRepository::class);
+        $repository
+            ->findOneBy(['id' => 1])
+            ->willReturn($forecast);
+
+        $this->entityManager
+            ->remove($forecast)
+            ->shouldBeCalled();
+        $this->entityManager
+            ->flush()
+            ->shouldBeCalled();
+        $this->entityManager
+            ->getRepository(Forecast::class)
+            ->willReturn($repository->reveal());
+
+        $apiHandler = new ApiHandler($this->entityManager->reveal());
+
+        /** @var ServerRequestInterface|ObjectProphecy $request */
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request
+            ->getMethod()
+            ->willReturn('DELETE');
+
+        $request
+            ->getAttribute('id')
+            ->willReturn(1);
+
+        $response = $apiHandler->handle($request->reveal());
+
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals($response->getBody()->getContents(), '{"status":"success"}');
+    }
+
 }

@@ -71,6 +71,23 @@ class ApiHandler implements RequestHandlerInterface
             $result['status'] = 'success';
         }
 
+        if ($request->getMethod() === 'DELETE') {
+            /** @var Forecast $forecast */
+            $forecast = $this
+                ->entityManager
+                ->getRepository(Forecast::class)
+                ->findOneBy(
+                    [
+                        'id' => $request->getAttribute('id')
+                    ]
+                );
+
+            $this->entityManager->remove($forecast);
+            $this->entityManager->flush();
+
+            $result['status'] = 'success';
+        }
+
         return new JsonResponse($result);
     }
 }
