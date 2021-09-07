@@ -62,13 +62,22 @@ class Forecast implements \JsonSerializable
      */
     private string $endDate;
 
-    /**
-     * Application constructor.
-     * @param $name
-     */
-    public function __construct($name)
-    {
+    public function __construct(
+        int $id,
+        string $name,
+        string $city,
+        string $phone,
+        string $email,
+        string $startDate,
+        string $endDate
+    ) {
+        $this->id = $id;
         $this->name = $name;
+        $this->city = $city;
+        $this->phone = $phone;
+        $this->email = $email;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     public function jsonSerialize(): array
