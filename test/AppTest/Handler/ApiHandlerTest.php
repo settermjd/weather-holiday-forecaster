@@ -101,4 +101,49 @@ class ApiHandlerTest extends TestCase
         self::assertEquals(200, $response->getStatusCode());
     }
 
+    public function testCanCreateForecastWithValidData()
+    {
+        $forecast = new Forecast(
+            'Matthew Setter',
+            'Lisbon',
+            '+1123456789',
+            'dave.grohl@example.org',
+            'Tuesday, 07 Sep 2021',
+            'Friday, 10 Sep 2021',
+        );
+
+        $this->entityManager
+            ->persist($forecast);
+
+        $this->entityManager
+            ->flush();
+
+        $apiHandler = new ApiHandler($this->entityManager->reveal());
+
+        /** @var ServerRequestInterface|ObjectProphecy $request */
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request
+            ->getMethod()
+            ->willReturn('POST');
+
+        $request
+            ->getParsedBody()
+            ->willReturn(
+                [
+                    'name' => 'Matthew Setter',
+                    'city' => 'Lisbon',
+                    'phone' => '+1123456789',
+                    'email' => 'dave.grohl@example.org',
+                    'startDate' => 'Tuesday, 07 Sep 2021',
+                    'endDate' => 'Friday, 10 Sep 2021',
+                ]
+            );
+
+        $response = $apiHandler->handle($request->reveal());
+
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals($response->getBody()->getContents(), '{"status":"success"}');
+    }
+
 }
