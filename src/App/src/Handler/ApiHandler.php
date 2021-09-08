@@ -58,6 +58,10 @@ class ApiHandler implements RequestHandlerInterface
                     ]
                 );
 
+            if ($forecast === null) {
+                return new JsonResponse(['status' => 'error', 'message' => 'Forecast not found'], 404);
+            }
+
             $forecast->setName($data['name']);
             $forecast->setCity($data['city']);
             $forecast->setPhone($data['phone']);
@@ -81,6 +85,10 @@ class ApiHandler implements RequestHandlerInterface
                         'id' => $request->getAttribute('id')
                     ]
                 );
+
+            if ($forecast === null) {
+                return new JsonResponse(['status' => 'error', 'message' => 'Forecast not found'], 404);
+            }
 
             $this->entityManager->remove($forecast);
             $this->entityManager->flush();

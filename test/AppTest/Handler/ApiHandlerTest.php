@@ -98,6 +98,7 @@ class ApiHandlerTest extends TestCase
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertEquals(200, $response->getStatusCode());
+        self::assertEquals($response->getBody()->getContents(), '[]');
     }
 
     public function testCanCreateForecastWithValidData()
@@ -139,6 +140,51 @@ class ApiHandlerTest extends TestCase
         self::assertEquals(200, $response->getStatusCode());
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertEquals($response->getBody()->getContents(), '{"status":"success"}');
+    }
+
+    public function testReturns404WhenAttemptingToUpdateNonExistentForecast()
+    {
+        /** @var EntityRepository|ObjectProphecy $repository */
+        $repository = $this->prophesize(ObjectRepository::class);
+        $repository
+            ->findOneBy(['id' => 1])
+            ->willReturn(null);
+
+        $this->entityManager
+            ->getRepository(Forecast::class)
+            ->willReturn($repository->reveal());
+
+        $apiHandler = new ApiHandler($this->entityManager->reveal());
+
+        /** @var ServerRequestInterface|ObjectProphecy $request */
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request
+            ->getMethod()
+            ->willReturn('PUT');
+
+        $request
+            ->getAttribute('id')
+            ->willReturn(1);
+
+        $request
+            ->getParsedBody()
+            ->willReturn(
+                [
+                    'id' => 1,
+                    'name' => 'Matthew Setter',
+                    'city' => 'Lisbon',
+                    'phone' => '+1123456789',
+                    'email' => 'dave.grohl@example.org',
+                    'startDate' => 'September 7th, 2021',
+                    'endDate' => 'September 10th, 2021',
+                ]
+            );
+
+        $response = $apiHandler->handle($request->reveal());
+
+        self::assertEquals(404, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals($response->getBody()->getContents(), '{"status":"error","message":"Forecast not found"}');
     }
 
     public function testCanUpdateForecastWithValidData()
@@ -245,6 +291,37 @@ class ApiHandlerTest extends TestCase
         self::assertEquals(200, $response->getStatusCode());
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertEquals($response->getBody()->getContents(), '{"status":"success"}');
+    }
+
+    public function testReturns404WhenAttemptingToDeleteNonExistentForecast()
+    {
+        /** @var EntityRepository|ObjectProphecy $repository */
+        $repository = $this->prophesize(ObjectRepository::class);
+        $repository
+            ->findOneBy(['id' => 1])
+            ->willReturn(null);
+
+        $this->entityManager
+            ->getRepository(Forecast::class)
+            ->willReturn($repository->reveal());
+
+        $apiHandler = new ApiHandler($this->entityManager->reveal());
+
+        /** @var ServerRequestInterface|ObjectProphecy $request */
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request
+            ->getMethod()
+            ->willReturn('DELETE');
+
+        $request
+            ->getAttribute('id')
+            ->willReturn(1);
+
+        $response = $apiHandler->handle($request->reveal());
+
+        self::assertEquals(404, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals($response->getBody()->getContents(), '{"status":"error","message":"Forecast not found"}');
     }
 
 }
