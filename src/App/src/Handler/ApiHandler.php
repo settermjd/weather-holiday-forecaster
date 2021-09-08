@@ -30,14 +30,14 @@ class ApiHandler implements RequestHandlerInterface
 
         if ($request->getMethod() === 'POST') {
             $data = $request->getParsedBody();
-            $forecast = new Forecast(
-                $data['name'],
-                $data['city'],
-                $data['phone'],
-                $data['email'],
-                $data['startDate'],
-                $data['endDate']
-            );
+
+            $forecast = new Forecast();
+            $forecast->setCity($data['city']);
+            $forecast->setName($data['name']);
+            $forecast->setPhone($data['phone']);
+            $forecast->setEmail($data['email']);
+            $forecast->setStartDate(new \DateTime($data['startDate']));
+            $forecast->setEndDate(new \DateTime($data['endDate']));
 
             $this->entityManager->persist($forecast);
             $this->entityManager->flush();
@@ -62,8 +62,8 @@ class ApiHandler implements RequestHandlerInterface
             $forecast->setCity($data['city']);
             $forecast->setPhone($data['phone']);
             $forecast->setEmail($data['email']);
-            $forecast->setStartDate($data['startDate']);
-            $forecast->setEndDate($data['endDate']);
+            $forecast->setStartDate(new \DateTime($data['startDate']));
+            $forecast->setEndDate(new \DateTime($data['endDate']));
 
             $this->entityManager->persist($forecast);
             $this->entityManager->flush();

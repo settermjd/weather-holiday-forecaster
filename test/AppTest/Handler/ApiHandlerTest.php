@@ -41,15 +41,14 @@ class ApiHandlerTest extends TestCase
 
     public function testListAllEntriesReturnsJsonResponseOfAvailableEntriesIfEntriesAreAvailable()
     {
-        $forecast = new Forecast(
-            'Matthew Setter',
-            'Lisbon',
-            '+1123456789',
-            'dave.grohl@example.org',
-            'Tuesday, 07 Sep 2021',
-            'Friday, 10 Sep 2021',
-            1,
-        );
+        $forecast = new Forecast();
+        $forecast->setName('Matthew Setter');
+        $forecast->setCity('Lisbon');
+        $forecast->setEmail('dave.grohl@example.org');
+        $forecast->setPhone('+1123456789');
+        $forecast->setStartDate(new \DateTime('September 7th, 2021'));
+        $forecast->setEndDate(new \DateTime('September 10th, 2021'));
+        $forecast->setId(1);
 
         /** @var EntityRepository|ObjectProphecy $repository */
         $repository = $this->prophesize(ObjectRepository::class);
@@ -103,20 +102,16 @@ class ApiHandlerTest extends TestCase
 
     public function testCanCreateForecastWithValidData()
     {
-        $forecast = new Forecast(
-            'Matthew Setter',
-            'Lisbon',
-            '+1123456789',
-            'dave.grohl@example.org',
-            'Tuesday, 07 Sep 2021',
-            'Friday, 10 Sep 2021',
-        );
+        $forecast = new Forecast();
+        $forecast->setName('Matthew Setter');
+        $forecast->setCity('Lisbon');
+        $forecast->setEmail('dave.grohl@example.org');
+        $forecast->setPhone('+1123456789');
+        $forecast->setStartDate(new \DateTime('September 7th, 2021'));
+        $forecast->setEndDate(new \DateTime('September 10th, 2021'));
 
-        $this->entityManager
-            ->persist($forecast);
-
-        $this->entityManager
-            ->flush();
+        $this->entityManager->persist($forecast);
+        $this->entityManager->flush();
 
         $apiHandler = new ApiHandler($this->entityManager->reveal());
 
@@ -134,8 +129,8 @@ class ApiHandlerTest extends TestCase
                     'city' => 'Lisbon',
                     'phone' => '+1123456789',
                     'email' => 'dave.grohl@example.org',
-                    'startDate' => 'Tuesday, 07 Sep 2021',
-                    'endDate' => 'Friday, 10 Sep 2021',
+                    'startDate' => 'September 7th, 2021',
+                    'endDate' => 'September 10th, 2021',
                 ]
             );
 
@@ -148,15 +143,14 @@ class ApiHandlerTest extends TestCase
 
     public function testCanUpdateForecastWithValidData()
     {
-        $forecast = new Forecast(
-            'Matthew Setter',
-            'Lisbon',
-            '+1123456789',
-            'dave.grohl@example.org',
-            'Tuesday, 07 Sep 2021',
-            'Friday, 10 Sep 2021',
-            1
-        );
+        $forecast = new Forecast();
+        $forecast->setName('Matthew Setter');
+        $forecast->setCity('Lisbon');
+        $forecast->setEmail('dave.grohl@example.org');
+        $forecast->setPhone('+1123456789');
+        $forecast->setStartDate(new \DateTime('September 7th, 2021'));
+        $forecast->setEndDate(new \DateTime('September 10th, 2021'));
+        $forecast->setId(1);
 
         /** @var EntityRepository|ObjectProphecy $repository */
         $repository = $this->prophesize(ObjectRepository::class);
@@ -195,8 +189,8 @@ class ApiHandlerTest extends TestCase
                     'city' => 'Lisbon',
                     'phone' => '+1123456789',
                     'email' => 'dave.grohl@example.org',
-                    'startDate' => 'Tuesday, 07 Sep 2021',
-                    'endDate' => 'Friday, 10 Sep 2021',
+                    'startDate' => 'September 7th, 2021',
+                    'endDate' => 'September 10th, 2021',
                 ]
             );
 
@@ -209,15 +203,14 @@ class ApiHandlerTest extends TestCase
 
     public function testCanDeleteExistingForecast()
     {
-        $forecast = new Forecast(
-            'Matthew Setter',
-            'Lisbon',
-            '+1123456789',
-            'dave.grohl@example.org',
-            'Tuesday, 07 Sep 2021',
-            'Friday, 10 Sep 2021',
-            1
-        );
+        $forecast = new Forecast();
+        $forecast->setName('Matthew Setter');
+        $forecast->setCity('Lisbon');
+        $forecast->setEmail('dave.grohl@example.org');
+        $forecast->setPhone('+1123456789');
+        $forecast->setStartDate(new \DateTime('September 7th, 2021'));
+        $forecast->setEndDate(new \DateTime('September 10th, 2021'));
+        $forecast->setId(1);
 
         /** @var EntityRepository|ObjectProphecy $repository */
         $repository = $this->prophesize(ObjectRepository::class);

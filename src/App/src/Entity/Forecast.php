@@ -54,33 +54,15 @@ class Forecast implements \JsonSerializable
      * @ORM\Column(name="start_date", type="date", length=255)
      * @var string
      */
-    private string $startDate;
+    private \DateTime $startDate;
 
     /**
      * @ORM\Column(name="end_date", type="date", length=255)
      * @var string
      */
-    private string $endDate;
+    private \DateTime $endDate;
 
-    public function __construct(
-        string $name,
-        string $city,
-        string $phone,
-        string $email,
-        string $startDate,
-        string $endDate,
-        ?int $id = null,
-    ) {
-        $this->name = $name;
-        $this->city = $city;
-        $this->phone = $phone;
-        $this->email = $email;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        if ($id !== null) {
-            $this->id = $id;
-        }
-    }
+    public function __construct() {}
 
     public function jsonSerialize(): array
     {
@@ -162,7 +144,7 @@ class Forecast implements \JsonSerializable
     /**
      * @return string
      */
-    public function getStartDate(): string
+    public function getStartDate(): \DateTime
     {
         return $this->startDate;
     }
@@ -170,7 +152,7 @@ class Forecast implements \JsonSerializable
     /**
      * @param  string  $startDate
      */
-    public function setStartDate(string $startDate): void
+    public function setStartDate(\DateTime $startDate): void
     {
         $this->startDate = $startDate;
     }
@@ -178,7 +160,7 @@ class Forecast implements \JsonSerializable
     /**
      * @return string
      */
-    public function getEndDate(): string
+    public function getEndDate(): \DateTime
     {
         return $this->endDate;
     }
@@ -186,8 +168,24 @@ class Forecast implements \JsonSerializable
     /**
      * @param  string  $endDate
      */
-    public function setEndDate(string $endDate): void
+    public function setEndDate(\DateTime $endDate): void
     {
         $this->endDate = $endDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param  int  $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }
