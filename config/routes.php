@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Mezzio\Application;
+use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use Mezzio\MiddlewareFactory;
 use Psr\Container\ContainerInterface;
 
@@ -40,4 +41,15 @@ use Psr\Container\ContainerInterface;
 return static function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
+
+    $app->get('/forecast', App\Handler\ApiHandler::class);
+    $app->post('/forecast', App\Handler\ApiHandler::class);
+    $app->put(
+        '/forecast/{id:\d+}',
+        [
+            BodyParamsMiddleware::class,
+            App\Handler\ApiHandler::class
+        ]
+    );
+    $app->delete('/forecast/{id:\d+}', App\Handler\ApiHandler::class);
 };
